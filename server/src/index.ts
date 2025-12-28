@@ -2,16 +2,26 @@ import express from 'express';
 import cors from 'cors';
 
 const app = express();
-const PORT = 3001;
+const PORT = 3000;
 
-app.use(cors());
+//Middlewre
+app.use(cors()); //Hace que el frontend (port 5173) hable con el server (port 3000)
 app.use(express.json());
 
-//La entrada
-app.get('/api/health', (req, res) => {
-    res.json({ mensaje: 'Holaa, el server esta vivo'})
+// Datos de ejemplo
+const products = [
+    { id: 1, name: "Album Dirt", price: 500, image: "💽"},
+    { id: 2, name: "Guitarra Fender", price: 3600, image: "🎸"},
+    { id: 3, name: "Album Facelift", price: 550, image: "💽"},
+]
+
+//Rutas
+//Cuando alguien visite al http://localhost:3000/api/products le damos los datos
+app.get('/api/products', (req, res) => {
+    console.log("Holaa alguien pidió productos")
+    res.json(products);
 });
 
 app.listen(PORT, () => {
-    console.log(`Listo en http://localhost: ${PORT}`);
+    console.log(`Listo en http://localhost:${PORT}`);
 });

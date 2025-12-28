@@ -1,34 +1,40 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect, useState } from 'react'
 import './App.css'
 
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  image: String;
+}
+
 function App() {
-  const [count, setCount] = useState(0)
+  const [products, setProducts] = useState<Product[]>([]);
+
+  // useEffect se ejecuta cuando la página carga
+useEffect(() => {
+  //Llamamos al servidor
+  fetch('http://localhost:3000/api/products')
+  .then(response => response.json())
+  .then(data => setProducts(data))
+  .catch(error => console.error("Error cargando productos", error))
+}, []);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="app-container">
+      <h1>Tienda de discos</h1>
+      <div className="products-grid" style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px'}}>
+        {products.map((product) => (
+          <div key={product.id} style={{border: '1px solid #ccc', padding: '20px', borderRadius: '10px'}}>
+            <div style={{ fontSize: '50px'}}>{product.image}</div>
+            <h3>{product.name}</h3>
+            <p>Precio: {product.price}</p>
+            <button>Añadir al carrito</button>
+          </div>
+        ))}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+      {products.length === 0 && <p>Cargando productos...</p>}
+    </div>
   )
 }
 
