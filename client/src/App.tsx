@@ -14,7 +14,7 @@ function App() {
   // useEffect se ejecuta cuando la página carga
 useEffect(() => {
   //Llamamos al servidor
-  fetch('http://localhost:3000/api/products')
+  fetch('http://127.0.0.1:3000/api/products')
   .then(response => response.json())
   .then(data => setProducts(data))
   .catch(error => console.error("Error cargando productos", error))

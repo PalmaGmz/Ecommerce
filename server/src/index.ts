@@ -5,7 +5,12 @@ const app = express();
 const PORT = 3000;
 
 //Middlewre
-app.use(cors()); //Hace que el frontend (port 5173) hable con el server (port 3000)
+app.use(cors({
+    origin: [
+    'http://localhost:5173', 
+    'http://127.0.0.1:5173'
+  ]
+})); //Hace que el frontend (port 5173) hable con el server (port 3000)
 app.use(express.json());
 
 // Datos de ejemplo
@@ -22,6 +27,6 @@ app.get('/api/products', (req, res) => {
     res.json(products);
 });
 
-app.listen(PORT, () => {
-    console.log(`Listo en http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Corriendo en http://127.0.0.1:${PORT}`);
 });
